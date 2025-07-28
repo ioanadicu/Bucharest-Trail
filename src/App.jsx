@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import Map from "./components/Map";  // import the Map component
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [time, setTime] = useState("");
+
+  // Get your API key safely from env variables
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert(`Start: ${start}, End: ${end}, Time: ${time}`);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="max-w-md mx-auto p-4 space-y-6">
+      <h1 className="text-3xl font-bold mb-4">Time to Kill</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block font-semibold mb-1">Start Location</label>
+          <input
+            type="text"
+            value={start}
+            onChange={(e) => setStart(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+            placeholder="Enter start location"
+            required
+          />
+        </div>
+        <div>
+          <label className="block font-semibold mb-1">End Location</label>
+          <input
+            type="text"
+            value={end}
+            onChange={(e) => setEnd(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+            placeholder="Enter end location"
+            required
+          />
+        </div>
+        <div>
+          <label className="block font-semibold mb-1">Time Available (hours)</label>
+          <input
+            type="number"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full border rounded px-3 py-2"
+            placeholder="e.g. 3"
+            min="0.5"
+            step="0.5"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Plan My Route
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </form>
+
+      {/* Render the Google Map below the form */}
+      <Map apiKey={apiKey} />
+    </div>
+  );
 }
 
-export default App
+export default App;
