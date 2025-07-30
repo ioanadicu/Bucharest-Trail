@@ -131,7 +131,7 @@ function App() {
     },
     // Parks
     {
-      name: "Herastrau Park (King Michael I Park)",
+      name: "Herastrau Park",
       category: "park",
       photo: park1,
       location: { lat: 44.4762, lng: 26.0809 },
@@ -227,6 +227,13 @@ function App() {
     setSelectedPlaces((prev) => {
       const exists = prev.find((p) => p.name === place.name);
       if (exists) {
+        // Deselect: remove from selectedPlaces, and refetch extra time for this place
+        setTimeout(async () => {
+          if (getExtraTimeForPlaceRef.current && start && end) {
+            const seconds = await getExtraTimeForPlaceRef.current(place);
+            setExtraTimes((old) => ({ ...old, [place.name]: seconds }));
+          }
+        }, 0);
         return prev.filter((p) => p.name !== place.name);
       } else {
         return [...prev, place];
@@ -314,7 +321,7 @@ function App() {
                 key={place.name}
                 className={`relative bg-white/80 rounded-2xl shadow-xl hover:shadow-2xl transition-all flex flex-col items-center p-5 border-2 ${selected ? "border-green-500 ring-2 ring-green-200" : "border-transparent"} group overflow-hidden backdrop-blur-md`}
               >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-blue-200 via-pink-200 to-yellow-100 blur-2xl z-0" />
+                <div className={`absolute inset-0 transition bg-gradient-to-br from-blue-200 via-pink-200 to-yellow-100 blur-2xl z-0 ${selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
                 <label className="flex flex-col items-center cursor-pointer w-full z-10">
                   <input
                     type="checkbox"
@@ -340,7 +347,7 @@ function App() {
 
         {/* Selected places chips */}
         {selectedPlaces.length > 0 && (
-        <div className="mt-6 flex flex-wrap gap-2 justify-center">
+        <div className="mt-14 flex flex-wrap gap-2 justify-center">
             {selectedPlaces.map((stop) => (
               <span
                 key={stop.name}
@@ -353,7 +360,7 @@ function App() {
         )}
 
         {/* Map and route will be implemented next */}
-        <div className="mt-10 rounded-3xl overflow-hidden shadow-2xl border border-white/40 bg-white/60 backdrop-blur-xl">
+        <div className="mt-10">
           <Map
             start={start}
             end={end}
