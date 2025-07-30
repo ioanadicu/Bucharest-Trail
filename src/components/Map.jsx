@@ -21,6 +21,91 @@ const Map = ({ start, end, selectedPlaces, onRouteInfo }) => {
     });
   };
 
+  // Helper to draw route and get duration
+  const getRouteDuration = (startLoc, endLoc, waypoints, callback) => {
+    const google = window.google;
+    const directionsService = new google.maps.DirectionsService();
+    if (!directionsRendererRef.current) {
+      directionsRendererRef.current = new google.maps.DirectionsRenderer({ suppressMarkers: true });
+    }
+    directionsRendererRef.current.setMap(mapRef.current.__mapInstance || null);
+    directionsService.route(
+      {
+        origin: startLoc,
+        destination: endLoc,
+        waypoints: waypoints,
+        travelMode: google.maps.TravelMode.WALKING,
+        optimizeWaypoints: true,
+      },
+      (result, status) => {
+        if (status === "OK") {
+          let total = 0;
+          const legs = result.routes[0].legs;
+          for (let leg of legs) {
+            total += leg.duration.value;
+          }
+          callback(total, result);
+        } else {
+          callback(null, null);
+        }
+      }
+    );
+  };
+
+  // Expose a function to parent to get extra time for a place
+  // Usage: getExtraTimeForPlace(place) => Promise<number|null>
+  // (Parent must pass setGetExtraTimeForPlace to Map as a prop)
+  useEffect(() => {
+    if (!window.google) return;
+    if (!start || !end) return;
+    // Provide a function to parent to get extra time for a place
+    if (typeof window.setGetExtraTimeForPlace === "function") {
+      window.setGetExtraTimeForPlace(async (place) => {
+        // Geocode start/end if needed
+        const [startLoc, endLoc] = await Promise.all([
+          geocodeAddress(start),
+          geocodeAddress(end),
+        ]);
+        if (!startLoc || !endLoc) return null;
+        return new Promise((resolve) => {
+          const google = window.google;
+          const directionsService = new google.maps.DirectionsService();
+          // Route with current selectedPlaces
+          directionsService.route(
+            {
+              origin: startLoc,
+              destination: endLoc,
+              waypoints: selectedPlaces.map((p) => ({ location: p.location, stopover: true })),
+              travelMode: google.maps.TravelMode.WALKING,
+              optimizeWaypoints: true,
+            },
+            (result, status) => {
+              if (status !== "OK") return resolve(null);
+              let base = 0;
+              for (let leg of result.routes[0].legs) base += leg.duration.value;
+              // Route with this place added
+              directionsService.route(
+                {
+                  origin: startLoc,
+                  destination: endLoc,
+                  waypoints: [...selectedPlaces, place].map((p) => ({ location: p.location, stopover: true })),
+                  travelMode: google.maps.TravelMode.WALKING,
+                  optimizeWaypoints: true,
+                },
+                (result2, status2) => {
+                  if (status2 !== "OK") return resolve(null);
+                  let withPlace = 0;
+                  for (let leg of result2.routes[0].legs) withPlace += leg.duration.value;
+                  resolve(withPlace - base);
+                }
+              );
+            }
+          );
+        });
+      });
+    }
+  }, [start, end, selectedPlaces]);
+
   useEffect(() => {
     if (!window.google || !mapRef.current) return;
     const google = window.google;
@@ -28,6 +113,7 @@ const Map = ({ start, end, selectedPlaces, onRouteInfo }) => {
       center: { lat: 44.4268, lng: 26.1025 }, // Bucharest city center
       zoom: 13,
     });
+    mapRef.current.__mapInstance = map;
 
     // Remove old markers
     markersRef.current.forEach((m) => m.setMap(null));
@@ -64,8 +150,8 @@ const Map = ({ start, end, selectedPlaces, onRouteInfo }) => {
       if (startLoc) addMarker(startLoc, "#4285F4");
       if (endLoc) addMarker(endLoc, "#ea4335");
 
-      // Draw route if start, end, and at least one place
-      if (startLoc && endLoc && selectedPlaces.length > 0) {
+      // Draw route if start and end are set (even if no places)
+      if (startLoc && endLoc) {
         const directionsService = new google.maps.DirectionsService();
         if (!directionsRendererRef.current) {
           directionsRendererRef.current = new google.maps.DirectionsRenderer({ suppressMarkers: true });

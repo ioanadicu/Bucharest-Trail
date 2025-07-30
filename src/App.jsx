@@ -34,7 +34,6 @@ function App() {
   const endInputRef = useRef(null);
   const startAutocompleteRef = useRef(null);
   const endAutocompleteRef = useRef(null);
-
   // Curated list of famous places in Bucharest
   const PLACES = [
     // Museums
@@ -162,6 +161,36 @@ function App() {
       location: { lat: 44.4197, lng: 26.1592 },
     },
   ];
+  // Extra time state and ref
+  const [extraTimes, setExtraTimes] = useState({});
+  const getExtraTimeForPlaceRef = useRef(null);
+  // Filter places by selected categories (move this up so it's available for useEffect)
+  const filteredPlaces = PLACES.filter((p) => selectedCategories.includes(p.category));
+  // Expose setter for Map
+  window.setGetExtraTimeForPlace = (fn) => {
+    getExtraTimeForPlaceRef.current = fn;
+  };
+  // Update extra times when start/end/selectedPlaces/filteredPlaces change
+  React.useEffect(() => {
+    if (!getExtraTimeForPlaceRef.current || !start || !end) return;
+    let cancelled = false;
+    const fetchTimes = async () => {
+      const times = {};
+      for (const place of filteredPlaces) {
+        // Don't show for already selected places
+        if (selectedPlaces.some((p) => p.name === place.name)) {
+          times[place.name] = null;
+          continue;
+        }
+        const seconds = await getExtraTimeForPlaceRef.current(place);
+        if (cancelled) return;
+        times[place.name] = seconds;
+      }
+      setExtraTimes(times);
+    };
+    fetchTimes();
+    return () => { cancelled = true; };
+  }, [start, end, selectedPlaces, filteredPlaces]);
 
   const CATEGORIES = [
     { key: "museum", label: "Museums" },
@@ -205,8 +234,7 @@ function App() {
     });
   };
 
-  // Filter places by selected categories
-  const filteredPlaces = PLACES.filter((p) => selectedCategories.includes(p.category));
+  // ...filteredPlaces is now declared above...
   return (
     <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
       <div className="min-h-screen min-w-screen w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 py-10">
@@ -298,6 +326,12 @@ function App() {
                     <img src={place.photo} alt={place.name} className="object-cover w-full h-full" />
                   </div>
                   <div className="text-center font-semibold text-sm text-gray-800 drop-shadow-sm">{place.name}</div>
+                  {/* Show extra time if not selected and time is available */}
+                  {!selected && extraTimes[place.name] != null && (
+                    <div className="text-xs text-gray-600 mt-2">
+                      +{Math.round(extraTimes[place.name] / 60)} min to route
+                    </div>
+                  )}
                 </label>
               </div>
             );
