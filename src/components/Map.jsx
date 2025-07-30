@@ -25,7 +25,7 @@ const Map = ({ start, end, selectedPlaces, onRouteInfo }) => {
     if (!window.google || !mapRef.current) return;
     const google = window.google;
     const map = new google.maps.Map(mapRef.current, {
-      center: { lat: 51.5072, lng: -0.1276 },
+      center: { lat: 44.4268, lng: 26.1025 }, // Bucharest city center
       zoom: 13,
     });
 

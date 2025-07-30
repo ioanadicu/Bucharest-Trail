@@ -15,55 +15,131 @@ function App() {
   const startAutocompleteRef = useRef(null);
   const endAutocompleteRef = useRef(null);
 
-  // Curated list of famous places in London
+  // Curated list of famous places in Bucharest
   const PLACES = [
+    // Museums
     {
-      name: "British Museum",
+      name: "National Museum of Art of Romania",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/a/a1/British_Museum_from_NE_2.JPG",
-      location: { lat: 51.5194, lng: -0.1270 },
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Muzeul_National_de_Arta_al_Romaniei_2010.jpg",
+      location: { lat: 44.4397, lng: 26.0963 },
     },
     {
-      name: "Natural History Museum",
+      name: "Grigore Antipa National Museum of Natural History",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Natural_History_Museum_London_Jan_2006.jpg",
-      location: { lat: 51.4967, lng: -0.1764 },
+      photo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Muzeul_National_de_Istorie_Naturala_Grigore_Antipa.jpg",
+      location: { lat: 44.4602, lng: 26.0846 },
     },
     {
-      name: "Hyde Park",
-      category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Hyde_Park_London_-_September_2006.jpg",
-      location: { lat: 51.5073, lng: -0.1657 },
+      name: "National Museum of Romanian History",
+      category: "museum",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Muzeul_National_de_Istorie_a_Romaniei_Bucharest.jpg",
+      location: { lat: 44.4325, lng: 26.0976 },
     },
     {
-      name: "Regent's Park",
-      category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Regents_Park_London_2007-1.jpg",
-      location: { lat: 51.5313, lng: -0.1569 },
+      name: "The Museum of the Romanian Peasant",
+      category: "museum",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Muzeul_Taranului_Roman_Bucharest.jpg",
+      location: { lat: 44.4542, lng: 26.0847 },
     },
     {
-      name: "Monmouth Coffee",
+      name: "Cotroceni National Museum",
+      category: "museum",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Muzeul_National_Cotroceni_Bucharest.jpg",
+      location: { lat: 44.4352, lng: 26.0536 },
+    },
+    // Cafes
+    {
+      name: "Origo Coffee Shop",
       category: "cafe",
       photo: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-      location: { lat: 51.5136, lng: -0.0911 },
+      location: { lat: 44.4365, lng: 26.0963 },
     },
     {
-      name: "Kaffeine",
+      name: "M60 Cafe",
       category: "cafe",
       photo: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=400&q=80",
-      location: { lat: 51.5185, lng: -0.1411 },
+      location: { lat: 44.4472, lng: 26.0966 },
     },
     {
-      name: "AIRE Ancient Baths",
+      name: "Beans & Dots",
+      category: "cafe",
+      photo: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+      location: { lat: 44.4369, lng: 26.1032 },
+    },
+    {
+      name: "T-Zero Coffee Shop",
+      category: "cafe",
+      photo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
+      location: { lat: 44.4412, lng: 26.0977 },
+    },
+    {
+      name: "Artichoke Social House",
+      category: "cafe",
+      photo: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      location: { lat: 44.4417, lng: 26.0962 },
+    },
+    // Relax Spots
+    {
+      name: "Therme București",
       category: "relax",
       photo: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-      location: { lat: 51.5132, lng: -0.0982 },
+      location: { lat: 44.6612, lng: 25.9576 },
     },
     {
-      name: "Porchester Spa",
+      name: "Orhideea Spa",
       category: "relax",
       photo: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=400&q=80",
-      location: { lat: 51.5192, lng: -0.1871 },
+      location: { lat: 44.4482, lng: 26.0632 },
+    },
+    {
+      name: "Premier Palace Spa Hotel",
+      category: "relax",
+      photo: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+      location: { lat: 44.4268, lng: 26.0174 },
+    },
+    {
+      name: "Eden Spa",
+      category: "relax",
+      photo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
+      location: { lat: 44.4411, lng: 26.0967 },
+    },
+    {
+      name: "Shakti Spa",
+      category: "relax",
+      photo: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      location: { lat: 44.4322, lng: 26.1036 },
+    },
+    // Parks
+    {
+      name: "Herastrau Park (King Michael I Park)",
+      category: "park",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Herastrau_Bucharest.jpg",
+      location: { lat: 44.4762, lng: 26.0809 },
+    },
+    {
+      name: "Cismigiu Gardens",
+      category: "park",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Cismigiu_Gardens_Bucharest.jpg",
+      location: { lat: 44.4362, lng: 26.0865 },
+    },
+    {
+      name: "Tineretului Park",
+      category: "park",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Tineretului_Bucharest.jpg",
+      location: { lat: 44.4065, lng: 26.1032 },
+    },
+    {
+      name: "Carol Park",
+      category: "park",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Carol_Bucharest.jpg",
+      location: { lat: 44.4167, lng: 26.0886 },
+    },
+    {
+      name: "Alexandru Ioan Cuza Park",
+      category: "park",
+      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Alexandru_Ioan_Cuza_Bucharest.jpg",
+      location: { lat: 44.4197, lng: 26.1592 },
     },
   ];
 
