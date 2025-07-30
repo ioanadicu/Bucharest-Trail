@@ -1,5 +1,25 @@
+import relax1 from "./assets/relax1.jpg";
+import relax2 from "./assets/relax2.jpg";
+import relax3 from "./assets/relax3.jpg";
+import relax4 from "./assets/relax4.jpg";
+import relax5 from "./assets/relax5.jpg";
+import park1 from "./assets/park1.jpg";
+import park2 from "./assets/park2.jpg";
+import park3 from "./assets/park3.jpg";
+import park4 from "./assets/park4.jpg";
+import park5 from "./assets/park5.JPG";
+import cafe1 from "./assets/cafe1.jpg";
+import cafe2 from "./assets/cafe2.jpg";
+import cafe3 from "./assets/cafe3.jpeg";
+import cafe4 from "./assets/cafe4.jpg";
+import cafe5 from "./assets/cafe5.JPG";
 
 import React, { useState, useRef } from "react";
+import museum1 from "./assets/museum1.jpg";
+import museum2 from "./assets/museum2.jpg";
+import museum3 from "./assets/museum3.jpeg";
+import museum4 from "./assets/museum4.jpg";
+import museum5 from "./assets/museum5.jpg";
 import { LoadScript, Autocomplete } from "@react-google-maps/api";
 import Map from "./components/Map";
 
@@ -21,124 +41,124 @@ function App() {
     {
       name: "National Museum of Art of Romania",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Muzeul_National_de_Arta_al_Romaniei_2010.jpg",
+      photo: museum1,
       location: { lat: 44.4397, lng: 26.0963 },
     },
     {
       name: "Grigore Antipa National Museum of Natural History",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Muzeul_National_de_Istorie_Naturala_Grigore_Antipa.jpg",
+      photo: museum2,
       location: { lat: 44.4602, lng: 26.0846 },
     },
     {
       name: "National Museum of Romanian History",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Muzeul_National_de_Istorie_a_Romaniei_Bucharest.jpg",
+      photo: museum3,
       location: { lat: 44.4325, lng: 26.0976 },
     },
     {
       name: "The Museum of the Romanian Peasant",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Muzeul_Taranului_Roman_Bucharest.jpg",
+      photo: museum4,
       location: { lat: 44.4542, lng: 26.0847 },
     },
     {
       name: "Cotroceni National Museum",
       category: "museum",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/7/7e/Muzeul_National_Cotroceni_Bucharest.jpg",
+      photo: museum5,
       location: { lat: 44.4352, lng: 26.0536 },
     },
     // Cafes
     {
       name: "Origo Coffee Shop",
       category: "cafe",
-      photo: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      photo: cafe1,
       location: { lat: 44.4365, lng: 26.0963 },
     },
     {
       name: "M60 Cafe",
       category: "cafe",
-      photo: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=400&q=80",
+      photo: cafe2,
       location: { lat: 44.4472, lng: 26.0966 },
     },
     {
       name: "Beans & Dots",
       category: "cafe",
-      photo: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+      photo: cafe3,
       location: { lat: 44.4369, lng: 26.1032 },
     },
     {
       name: "T-Zero Coffee Shop",
       category: "cafe",
-      photo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
+      photo: cafe4,
       location: { lat: 44.4412, lng: 26.0977 },
     },
     {
       name: "Artichoke Social House",
       category: "cafe",
-      photo: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      photo: cafe5,
       location: { lat: 44.4417, lng: 26.0962 },
     },
     // Relax Spots
     {
       name: "Therme București",
       category: "relax",
-      photo: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      photo: relax1,
       location: { lat: 44.6612, lng: 25.9576 },
     },
     {
       name: "Orhideea Spa",
       category: "relax",
-      photo: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=400&q=80",
+      photo: relax2,
       location: { lat: 44.4482, lng: 26.0632 },
     },
     {
       name: "Premier Palace Spa Hotel",
       category: "relax",
-      photo: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+      photo: relax3,
       location: { lat: 44.4268, lng: 26.0174 },
     },
     {
       name: "Eden Spa",
       category: "relax",
-      photo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80",
+      photo: relax4,
       location: { lat: 44.4411, lng: 26.0967 },
     },
     {
       name: "Shakti Spa",
       category: "relax",
-      photo: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      photo: relax5,
       location: { lat: 44.4322, lng: 26.1036 },
     },
     // Parks
     {
       name: "Herastrau Park (King Michael I Park)",
       category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Herastrau_Bucharest.jpg",
+      photo: park1,
       location: { lat: 44.4762, lng: 26.0809 },
     },
     {
       name: "Cismigiu Gardens",
       category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Cismigiu_Gardens_Bucharest.jpg",
+      photo: park2,
       location: { lat: 44.4362, lng: 26.0865 },
     },
     {
       name: "Tineretului Park",
       category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Tineretului_Bucharest.jpg",
+      photo: park3,
       location: { lat: 44.4065, lng: 26.1032 },
     },
     {
       name: "Carol Park",
       category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Carol_Bucharest.jpg",
+      photo: park4,
       location: { lat: 44.4167, lng: 26.0886 },
     },
     {
       name: "Alexandru Ioan Cuza Park",
       category: "park",
-      photo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Parcul_Alexandru_Ioan_Cuza_Bucharest.jpg",
+      photo: park5,
       location: { lat: 44.4197, lng: 26.1592 },
     },
   ];
