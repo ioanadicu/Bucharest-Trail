@@ -364,8 +364,31 @@ function App() {
         {/* Show walking time below the map */}
         {routeInfo && routeInfo.duration && (
           <div className="mt-6 flex justify-center w-full">
-            <div className="text-2xl font-bold text-gray-800 bg-gradient-to-r from-green-200 via-blue-100 to-yellow-100 px-8 py-4 rounded-2xl shadow-lg inline-block text-center">
-              <span className="mr-2">🕒</span>Estimated walking time: <span className="text-green-700">{Math.round(routeInfo.duration / 60)} min</span>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="text-2xl font-bold text-gray-800 bg-gradient-to-r from-green-200 via-blue-100 to-yellow-100 px-8 py-4 rounded-2xl shadow-lg inline-block text-center">
+                <span className="mr-2">🕒</span>Estimated walking time: <span className="text-green-700">{Math.round(routeInfo.duration / 60)} min</span>
+              </div>
+              {/* Google Maps Route Button */}
+              <button
+                className="ml-0 sm:ml-4 mt-4 sm:mt-0 px-5 py-3 rounded-xl bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
+                style={{ minWidth: 180 }}
+                onClick={() => {
+                  // Build Google Maps directions URL
+                  const base = "https://www.google.com/maps/dir/?api=1";
+                  const origin = start ? `&origin=${encodeURIComponent(start)}` : "";
+                  const destination = end ? `&destination=${encodeURIComponent(end)}` : "";
+                  let waypoints = "";
+                  if (selectedPlaces.length > 0) {
+                    waypoints = `&waypoints=${selectedPlaces.map(p => encodeURIComponent(`${p.location.lat},${p.location.lng}`)).join("|")}`;
+                  }
+                  const travelmode = "&travelmode=walking";
+                  const url = `${base}${origin}${destination}${waypoints}${travelmode}`;
+                  window.open(url, "_blank");
+                }}
+                type="button"
+              >
+                Open in Google Maps
+              </button>
             </div>
           </div>
         )}
