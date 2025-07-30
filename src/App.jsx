@@ -189,45 +189,54 @@ function App() {
   const filteredPlaces = PLACES.filter((p) => selectedCategories.includes(p.category));
   return (
     <LoadScript googleMapsApiKey={apiKey} libraries={["places"]}>
-      <div className="max-w-md mx-auto p-4 space-y-6">
-        <h1 className="text-3xl font-bold mb-4">Time to Kill</h1>
-        <form className="space-y-4">
-          <div>
-            <label className="block font-semibold mb-1">Start Location</label>
-            <Autocomplete
-              onLoad={ref => (startAutocompleteRef.current = ref)}
-              onPlaceChanged={handleStartPlaceChanged}
-            >
-              <input
-                ref={startInputRef}
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                placeholder="Enter start location"
-                required
-                onChange={e => setStart(e.target.value)}
-              />
-            </Autocomplete>
+      <div className="min-h-screen min-w-screen w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 py-10">
+        {/* Top Bar */}
+        <header className="fixed top-0 left-0 w-full z-50 bg-white/40 backdrop-blur-lg border-b border-white/30 shadow-md">
+          <div className="max-w-screen-2xl mx-auto flex items-center justify-center px-6 py-3">
+            <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-pink-500 to-yellow-400 bg-clip-text text-transparent drop-shadow text-center">Time to Kill</span>
+            {/* You can add a logo or nav here if desired */}
           </div>
-          <div>
-            <label className="block font-semibold mb-1">End Location</label>
-            <Autocomplete
-              onLoad={ref => (endAutocompleteRef.current = ref)}
-              onPlaceChanged={handleEndPlaceChanged}
-            >
-              <input
-                ref={endInputRef}
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                placeholder="Enter end location"
-                required
-                onChange={e => setEnd(e.target.value)}
-              />
-            </Autocomplete>
-          </div>
-        </form>
+        </header>
+        <div className="w-full h-full mx-auto p-4 sm:p-8 rounded-3xl shadow-2xl bg-white/60 backdrop-blur-md border border-white/40 max-w-screen-2xl xl:mx-24 lg:mx-16 md:mx-8 mt-20">
+          {/* Removed duplicate 'Time to Kill' title */}
+          <h2 className="text-2xl font-bold mb-6 text-left text-gray-700">Begin your Bucharest journey</h2>
+          <form className="flex flex-col sm:flex-row gap-6 mb-8 justify-center items-end">
+            <div className="flex-1">
+              <label className="block font-semibold mb-1 text-gray-700">Start Location</label>
+              <Autocomplete
+                onLoad={ref => (startAutocompleteRef.current = ref)}
+                onPlaceChanged={handleStartPlaceChanged}
+              >
+                <input
+                  ref={startInputRef}
+                  type="text"
+                  className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 shadow focus:border-blue-400 focus:ring-2 focus:ring-blue-200 transition"
+                  placeholder="Enter start location"
+                  required
+                  onChange={e => setStart(e.target.value)}
+                />
+              </Autocomplete>
+            </div>
+            <div className="flex-1">
+              <label className="block font-semibold mb-1 text-gray-700">End Location</label>
+              <Autocomplete
+                onLoad={ref => (endAutocompleteRef.current = ref)}
+                onPlaceChanged={handleEndPlaceChanged}
+              >
+                <input
+                  ref={endInputRef}
+                  type="text"
+                  className="w-full border-2 border-pink-200 rounded-xl px-4 py-3 shadow focus:border-pink-400 focus:ring-2 focus:ring-pink-200 transition"
+                  placeholder="Enter end location"
+                  required
+                  onChange={e => setEnd(e.target.value)}
+                />
+              </Autocomplete>
+            </div>
+          </form>
 
         {/* Category filter buttons */}
-        <div className="flex flex-wrap gap-2 justify-center mt-4">
+        <div className="flex flex-wrap gap-3 justify-center mt-2 mb-6">
           {CATEGORIES.map((cat) => {
             let selectedColor = "";
             if (cat.key === "museum") selectedColor = "bg-blue-600 border-blue-600 focus:ring-blue-400";
@@ -249,23 +258,26 @@ function App() {
         </div>
 
         {/* Place cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6">
+        <div className="grid gap-6 mt-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6" style={{gridAutoFlow:'row', gridAutoColumns:'minmax(0,1fr)'}}>
           {filteredPlaces.map((place) => {
             const selected = selectedPlaces.some((p) => p.name === place.name);
             return (
               <div
                 key={place.name}
-                className={`bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col items-center p-4 border-2 ${selected ? "border-green-600" : "border-transparent"}`}
+                className={`relative bg-white/80 rounded-2xl shadow-xl hover:shadow-2xl transition-all flex flex-col items-center p-5 border-2 ${selected ? "border-green-500 ring-2 ring-green-200" : "border-transparent"} group overflow-hidden backdrop-blur-md`}
               >
-                <label className="flex flex-col items-center cursor-pointer w-full">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-gradient-to-br from-blue-200 via-pink-200 to-yellow-100 blur-2xl z-0" />
+                <label className="flex flex-col items-center cursor-pointer w-full z-10">
                   <input
                     type="checkbox"
                     checked={selected}
                     onChange={() => handlePlaceToggle(place)}
                     className="mb-2 accent-green-600 w-5 h-5"
                   />
-                  <div className="w-20 h-20 rounded-full mb-2 bg-black flex items-center justify-center"></div>
-                  <div className="text-center font-semibold text-sm">{place.name}</div>
+                  <div className="w-20 h-20 rounded-full mb-2 bg-gray-200 flex items-center justify-center overflow-hidden shadow-lg border-4 border-white">
+                    <img src={place.photo} alt={place.name} className="object-cover w-full h-full" />
+                  </div>
+                  <div className="text-center font-semibold text-sm text-gray-800 drop-shadow-sm">{place.name}</div>
                 </label>
               </div>
             );
@@ -274,7 +286,7 @@ function App() {
 
         {/* Selected places chips */}
         {selectedPlaces.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-2 justify-center">
+        <div className="mt-6 flex flex-wrap gap-2 justify-center">
             {selectedPlaces.map((stop) => (
               <span
                 key={stop.name}
@@ -287,7 +299,7 @@ function App() {
         )}
 
         {/* Map and route will be implemented next */}
-        <div className="mt-8">
+        <div className="mt-10 rounded-3xl overflow-hidden shadow-2xl border border-white/40 bg-white/60 backdrop-blur-xl">
           <Map
             start={start}
             end={end}
@@ -297,10 +309,13 @@ function App() {
         </div>
         {/* Show walking time below the map */}
         {routeInfo && routeInfo.duration && (
-          <div className="mt-4 text-center text-lg font-semibold">
-            Estimated walking time: {Math.round(routeInfo.duration / 60)} min
+          <div className="mt-6 flex justify-center w-full">
+            <div className="text-2xl font-bold text-gray-800 bg-gradient-to-r from-green-200 via-blue-100 to-yellow-100 px-8 py-4 rounded-2xl shadow-lg inline-block text-center">
+              <span className="mr-2">🕒</span>Estimated walking time: <span className="text-green-700">{Math.round(routeInfo.duration / 60)} min</span>
+            </div>
           </div>
         )}
+        </div>
       </div>
     </LoadScript>
   );

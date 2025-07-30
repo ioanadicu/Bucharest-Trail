@@ -114,11 +114,9 @@ const Map = ({ start, end, selectedPlaces, onRouteInfo }) => {
   return (
     <div
       ref={mapRef}
+      className="w-full h-[60vh] min-h-[350px] md:h-[70vh] rounded-3xl border border-white/40 shadow-2xl overflow-hidden"
       style={{
-        height: "400px",
-        width: "100%",
-        border: "1px solid #ccc",
-        borderRadius: "8px",
+        background: "#e0e7ef",
         marginTop: "2rem",
       }}
     />
