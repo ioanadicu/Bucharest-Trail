@@ -213,7 +213,7 @@ function App() {
         {/* Top Bar */}
         <header className="fixed top-0 left-0 w-full z-50 bg-white/40 backdrop-blur-lg border-b border-white/30 shadow-md">
           <div className="max-w-screen-2xl mx-auto flex items-center justify-center px-6 py-3">
-            <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-pink-500 to-yellow-400 bg-clip-text text-transparent drop-shadow text-center">Time to Kill</span>
+            <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-pink-500 to-yellow-400 bg-clip-text text-transparent drop-shadow text-center">Bucharest Trail</span>
             {/* You can add a logo or nav here if desired */}
           </div>
         </header>
