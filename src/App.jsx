@@ -7,8 +7,6 @@ import { Autocomplete, LoadScript } from "@react-google-maps/api";
 
 function App() {
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-  const [time, setTime] = useState("");
-  const [mode, setMode] = useState("monuments");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const startInputRef = useRef(null);
